@@ -1,0 +1,33 @@
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[project]
+name = "aws-account-auditor"
+version = "0.1.0"
+description = "Read-only audit of an AWS account for security and cost problems."
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+dependencies = ["boto3>=1.34"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "moto[s3,ec2,iam,rds,cloudtrail]>=5", "ruff>=0.6"]
+
+[project.scripts]
+aws-audit = "aws_auditor.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/aws_auditor"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "SIM"]
+# Line length is the formatter's job; it leaves long message strings alone.
+ignore = ["E501"]
